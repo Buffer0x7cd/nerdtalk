@@ -8,9 +8,11 @@ class Post(models.Model):
     title = models.CharField(max_length= 256)
     content = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
-    upvote = models.IntegerField(default=1)
+    upvote = models.ManyToManyField('auth.User', related_name='voters')
 
 
     def __str__(self):
         return self.title
 
+    def is_owner(self, user):
+        return self.author == user

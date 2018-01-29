@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^post/knew/$', views.post_new, name='post_new'),
     url(r'^post/(?P<pk>\d+)/edit/$', views.post_edit, name='post_edit'),
     url(r'^post/(?P<pk>\d+)/delete/$',views.delete, name='post_remove'),
+    url(r'^post/(?P<pk>\d+)/upvote/$',views.upvote, name='post_upvote')
 ]

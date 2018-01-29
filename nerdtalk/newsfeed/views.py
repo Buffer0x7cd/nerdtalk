@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login
 from newsfeed.forms import PostForm
 from newsfeed.models import Post
+from django.contrib import messages
 
 
 @login_required
@@ -41,6 +42,7 @@ def post_new(request):
 def post_detail(request, pk):
     ''' Show full blog'''
     post =  get_object_or_404(Post, pk=pk)
+    post.edit = post.is_owner(request.user)
     return render(request, 'newsfeed/post_detail.html', {'post':post})
 
 
@@ -48,23 +50,41 @@ def post_detail(request, pk):
 def post_edit(request, pk):
     ''' Edit a post'''
     post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            #post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'newsfeed/post_edit.html', {'form': form})
-
+    if post.is_owner(request.user):
+        if request.method == "POST":
+            form = PostForm(request.POST, instance=post)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.author = request.user
+                #post.published_date = timezone.now()
+                post.save()
+                return redirect('post_detail', pk=post.pk)
+        else:
+            form = PostForm(instance=post)
+        return render(request, 'newsfeed/post_edit.html', {'form': form})
+    messages.error(request, "You Don't have permisson to edit this post")
+    return redirect("post_detail", pk=post.pk)
 
 
 @login_required
 def delete(request, pk):
     ''' Delete a post'''
     post = get_object_or_404(Post, pk=pk)
-    post.delete()
-    return redirect('home')
+    if post.is_owner(request.user):
+        post.delete()
+        return redirect('home')
+    else:
+        messages.error(request, "You don't have access to delete this post")
+        return redirect('post_detail', pk = post.pk)
+
+@login_required
+def upvote(request, pk):
+    ''' Upvote a post'''
+    post = get_object_or_404(Post, pk=pk)
+    if request.user not in post.upvote.all():
+        post.upvote.add(request.user)
+    else:
+        messages.error(request, 'Oops, looks like you have already upvoted this post')        
+    return redirect('post_detail', pk=pk)
+
+        
