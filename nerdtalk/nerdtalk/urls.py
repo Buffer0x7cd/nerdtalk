@@ -20,12 +20,7 @@ from newsfeed import views as newsfeed_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/login/$', auth_views.login, name="login"),
-    #url(r'', include('newsfeed.urls')),
-    url(r'^$',newsfeed_views.home, name="home"),
+    url(r'', include('newsfeed.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
-    url(r'^accounts/logout/$', auth_views.logout, name='logout', kwargs={'next_page': '/'}),
+    url(r'^accounts/logout/$', auth_views.logout, name='logout', kwargs={'next_page': '/accounts/login'}),
 ]
-
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-LOGIN_REDIRECT_URL = 'home'

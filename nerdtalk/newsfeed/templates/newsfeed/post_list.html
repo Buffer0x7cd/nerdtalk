@@ -1,0 +1,14 @@
+{% extends 'newsfeed/base.html' %}
+{% block content%}
+{% for post in posts %}
+<div class="post">
+    <div class="date">
+        <p>created at: {{ post.created_date }}</p>
+        <p><b><em>By: {{ post.author }}</em></b></p>
+    </div>
+    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+    <p>{{ post.content|linebreaksbr }}</p>
+</div>
+{% endfor %}
+{% endblock content%}
+                    
