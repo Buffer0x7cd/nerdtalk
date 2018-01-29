@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login
 from newsfeed.forms import PostForm
 from newsfeed.models import Post
+from django.contrib import messages
 
 
 @login_required
@@ -74,7 +75,9 @@ def upvote(request, pk):
     ''' Upvote a post'''
     post = get_object_or_404(Post, pk=pk)
     if request.user not in post.upvote.all():
-        post.upvote.add(request.user)        
+        post.upvote.add(request.user)
+    else:
+        messages.error(request, 'Oops, looks like you have already upvoted this post')        
     return redirect('post_detail', pk=pk)
 
         

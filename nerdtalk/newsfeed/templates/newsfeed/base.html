@@ -22,9 +22,18 @@
                     <div class="col-md-8">
                     {% block content %}
                     {% endblock %}
-                    
+
                     </div>
                 </div>
             </div>
+            {% if messages %}
+            <div class="span12">
+            {% for message in messages %}
+                <div class="alert bg-danger alert-{{ message.tags }}">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
         </body>
 <html>
