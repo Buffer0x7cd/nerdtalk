@@ -13,3 +13,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def is_owner(self, user):
+        return self.author == user
