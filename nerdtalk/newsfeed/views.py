@@ -68,3 +68,13 @@ def delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
     return redirect('home')
+
+@login_required
+def upvote(request, pk):
+    ''' Upvote a post'''
+    post = get_object_or_404(Post, pk=pk)
+    if request.user not in post.upvote.all():
+        post.upvote.add(request.user)        
+    return redirect('post_detail', pk=pk)
+
+        

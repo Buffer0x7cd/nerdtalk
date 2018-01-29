@@ -8,6 +8,7 @@
     </div>
     <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
     <p>{{ post.content|linebreaksbr }}</p>
+    <a class="btn btn-default" href="{% url 'post_upvote' pk=post.pk %}"><span class="glyphicon glyphicon-thumbs-up"></span>{{ post.upvote.count}}</a>
 </div>
 {% endfor %}
 {% endblock content%}
