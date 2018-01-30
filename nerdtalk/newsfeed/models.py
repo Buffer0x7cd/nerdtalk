@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from tinymce.models import HTMLField
-
+from django.shortcuts import reverse
 
 class Post(models.Model):
     '''Post a content '''
@@ -17,3 +17,6 @@ class Post(models.Model):
 
     def is_owner(self, user):
         return self.author == user
+
+    def get_absolute_url(self):
+        return reverse('post_detail', kwargs={'pk':self.pk})
