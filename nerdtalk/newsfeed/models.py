@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils import timezone
+from tinymce.models import HTMLField
 
 
 class Post(models.Model):
     '''Post a content '''
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length= 256)
-    content = models.TextField()
+    content = HTMLField()
     created_date = models.DateTimeField(default=timezone.now)
     upvote = models.ManyToManyField('auth.User', related_name='voters')
 
