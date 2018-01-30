@@ -7,7 +7,13 @@
         <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
         <h1>{{ post.title }}</h1>
-        <p>{{ post.content|linebreaksbr }}</p>
+        <p>{{ post.content|safe }}</p>
         <a class="btn btn-default" href="{% url 'post_upvote' pk=post.pk %}"><span class="glyphicon glyphicon-thumbs-up"></span>{{ post.upvote.count}}</a>
+        {% load social_share %}
+        
+        {% post_to_facebook post "Post to Facebook!" %}
+        {% post_to_twitter "New post: {{post.pk}}. Check it out!" object_or_url "Post to Twitter" %}
+        {% post_to_gplus post "Post to Google+!" %}
+        {% post_to_reddit "New post: {{post.title}}" post %}
     </div>
 {% endblock %}

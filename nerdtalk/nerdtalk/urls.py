@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'', include('newsfeed.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^accounts/logout/$', auth_views.logout, name='logout', kwargs={'next_page': '/accounts/login'}),
+    url(r'^tinymce/', include('tinymce.urls')),
 ]
